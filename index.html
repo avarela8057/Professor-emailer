@@ -730,7 +730,7 @@
     try {
       const text = await callClaude(
         `Write a cold email from ${sender} (${senderInfo}) to Professor ${profNameValue} requesting an unpaid volunteer research position.\n\nPaper: "${selectedPub.title}" — ${selectedPub.journal} (${selectedPub.year})\nAbstract: ${selectedPub.abstract}\n\nFormat:\nSubject: [subject line]\n\n[body]\n\nGuidelines:\n- Open with one specific compelling detail from this paper\n- Show genuine curiosity about this research direction\n- Mention biochemistry background at CSUF\n- Clearly state this is an unpaid volunteer request\n- 3-4 short paragraphs, warm but professional\n- Close with a request for a 15-minute call\n- Sign off as: ${sender}\n- No placeholder brackets anywhere`,
-        'You write specific, compelling cold emails for research positions. Never be generic.'
+        'You write cold emails that sound like a real enthusiastic college student wrote them — not a professional copywriter or AI. Use natural sentence rhythm with occasional short sentences. Vary paragraph length. Avoid corporate phrases like "I am writing to express my interest", "I would be honored", "keen interest", "leverage my skills", "align with my goals", or "I am reaching out". Never use em-dashes. Do not open with the student\'s name or "My name is". Write the way a smart, excited undergrad actually talks — genuine curiosity, a little informal but still respectful, no buzzwords.'
       );
       const lines = text.split('\n');
       const subjIdx = lines.findIndex(l => l.toLowerCase().startsWith('subject:'));
