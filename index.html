@@ -555,21 +555,27 @@ async function selectPub(idx){
 
 async function refineSummary(){
   const feedback=document.getElementById('summaryFeedback').value.trim();
-  if(!feedback||!selectedPub) return;
+  if(!feedback||!selectedPub){showToast('Add feedback first');return;}
   const status=document.getElementById('refineStatus');
+  const btn=event.target;
+  btn.disabled=true;
   status.innerHTML='<span class="spinner"></span> Refining…';
-  const summaryCard=document.getElementById('summaryCard');
+  const plainText=document.getElementById('summaryCard').innerText;
   try{
     const text=await callClaude(
-      `Here is a research summary:\n\n${currentSummaryHtml.replace(/<[^>]+>/g,'')}\n\nUser feedback: "${feedback}"\n\nRewrite the summary incorporating this feedback. Keep 3 paragraphs, enthusiastic tone, plain language.`,
-      'You are a science communicator. Apply the user feedback precisely and naturally.'
+      `Here is a research summary:\n\n${plainText}\n\nThe user wants you to adjust it with this feedback: "${feedback}"\n\nRewrite the full summary applying that feedback. Keep 3 paragraphs, enthusiastic tone, plain language. Output only the summary text, no labels or headings.`,
+      'You are a science communicator. Apply the user feedback precisely and naturally. Output plain paragraphs only.'
     );
     currentSummaryHtml=text.trim().split(/\n\n+/).filter(Boolean).map(p=>`<p>${p.trim()}</p>`).join('');
-    summaryCard.innerHTML=`<div class="summary-box">${currentSummaryHtml}</div>`;
+    document.getElementById('summaryCard').innerHTML=`<div class="summary-box">${currentSummaryHtml}</div>`;
     document.getElementById('summaryFeedback').value='';
     status.innerHTML='';
     showToast('Summary updated');
-  }catch(e){status.className='status err';status.innerHTML='Error: '+e.message;}
+  }catch(e){
+    status.className='status err';
+    status.innerHTML='Error: '+e.message;
+  }
+  btn.disabled=false;
 }
 
 async function regenerateSummary(){
@@ -613,24 +619,36 @@ async function generateEmail(){
 
 async function refineEmail(){
   const feedback=document.getElementById('emailFeedback').value.trim();
-  if(!feedback) return;
-  const currentEmail=document.getElementById('emailBody').value;
+  if(!feedback){showToast('Add feedback first');return;}
+  const currentSubject=document.getElementById('emailSubject').value;
+  const currentBody=document.getElementById('emailBody').value;
+  if(!currentBody){showToast('Generate an email first');return;}
   const status=document.getElementById('emailRefineStatus');
+  const btn=event.target;
+  btn.disabled=true;
   status.innerHTML='<span class="spinner"></span> Refining…';
   try{
     const text=await callClaude(
-      `Here is a cold email draft:\n\nSubject: ${document.getElementById('emailSubject').value}\n\n${currentEmail}\n\nUser feedback: "${feedback}"\n\nRewrite the email applying this feedback exactly. Keep the same subject line unless feedback says to change it. Output format: Subject: [subject]\n\n[body]`,
-      `You write cold emails that sound like a real enthusiastic college student — not an AI or professional. No corporate speak, no em-dashes, no filler phrases. Apply user feedback precisely and naturally.`
+      `Here is a cold email draft:\n\nSubject: ${currentSubject}\n\n${currentBody}\n\nThe user wants these changes: "${feedback}"\n\nRewrite the full email applying that feedback exactly. Output format must be:\nSubject: [subject line here]\n\n[full email body here]\n\nNothing else — no explanations, no labels other than the Subject line.`,
+      `You write cold emails that sound like a real enthusiastic college student. Apply user feedback precisely. No corporate speak, no em-dashes, no filler phrases.`
     );
     const lines=text.split('\n');
     const si=lines.findIndex(l=>l.toLowerCase().startsWith('subject:'));
-    if(si>=0) document.getElementById('emailSubject').value=lines[si].replace(/^subject:\s*/i,'').trim();
-    const body=lines.slice(si+1).join('\n').replace(/^\n+/,'');
-    document.getElementById('emailBody').value=body;
+    if(si>=0){
+      document.getElementById('emailSubject').value=lines[si].replace(/^subject:\s*/i,'').trim();
+      const newBody=lines.slice(si+1).join('\n').replace(/^\n+/,'');
+      document.getElementById('emailBody').value=newBody;
+    } else {
+      document.getElementById('emailBody').value=text.trim();
+    }
     document.getElementById('emailFeedback').value='';
     status.innerHTML='';
     showToast('Email updated');
-  }catch(e){status.className='status err';status.innerHTML='Error: '+e.message;}
+  }catch(e){
+    status.className='status err';
+    status.innerHTML='Error: '+e.message;
+  }
+  btn.disabled=false;
 }
 
 function openGmail(){
