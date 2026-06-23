@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <style>
-  /* ── TOKENS ─────────────────────────────────────────────── */
   :root {
     --bg:          #FAFAF8;
     --bg-2:        #F3F3F0;
@@ -29,8 +28,8 @@
     --radius-sm:   6px;
     --radius-md:   10px;
     --radius-lg:   14px;
-    --shadow:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-    --transition:  0.18s ease;
+    --shadow:      0 1px 3px rgba(0,0,0,0.06);
+    --t:           0.18s ease;
   }
   [data-theme="dark"] {
     --bg:          #141414;
@@ -53,502 +52,398 @@
     --shadow:      0 1px 3px rgba(0,0,0,0.3);
   }
 
-  /* ── RESET ───────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--ink);
     min-height: 100vh;
     font-size: 14px;
     line-height: 1.6;
-    transition: background var(--transition), color var(--transition);
+    transition: background var(--t), color var(--t);
   }
 
-  /* ── LAYOUT ──────────────────────────────────────────────── */
-  .page { max-width: 780px; margin: 0 auto; padding: 0 1.25rem 4rem; }
-
-  /* ── TOPBAR ──────────────────────────────────────────────── */
+  /* ── TOPBAR ── */
   .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem 0 0;
-    margin-bottom: 2rem;
+    padding: 1.1rem 2rem;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
   .logo { display: flex; align-items: center; gap: 10px; }
-  .logo-icon {
-    width: 32px; height: 32px;
-    background: var(--accent);
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-  .logo-text { font-family: 'Lora', Georgia, serif; font-weight: 500; font-size: 17px; color: var(--ink); letter-spacing: -0.01em; }
-  .logo-sub { font-size: 11px; color: var(--ink-3); margin-top: -2px; }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .theme-toggle {
-    width: 36px; height: 36px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-    transition: all var(--transition);
-    color: var(--ink-2);
-  }
+  .logo-icon { width: 30px; height: 30px; background: var(--accent); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .logo-text { font-family: 'Lora', Georgia, serif; font-weight: 500; font-size: 16px; color: var(--ink); }
+  .logo-sub { font-size: 11px; color: var(--ink-3); }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .theme-toggle { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ink-2); transition: all var(--t); }
   .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── TABS ─────────────────────────────────────────────────── */
-  .tabs {
+  /* ── TABS ── */
+  .tabs-bar {
     display: flex;
+    align-items: center;
     gap: 2px;
-    margin-bottom: 1.5rem;
-    background: var(--bg-2);
-    border-radius: var(--radius-md);
-    padding: 3px;
-    width: fit-content;
-  }
-  .tab-btn {
-    padding: 7px 16px;
-    border: none;
-    background: transparent;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-3);
-    cursor: pointer;
-    border-radius: calc(var(--radius-md) - 2px);
-    transition: all var(--transition);
-    font-family: 'Inter', sans-serif;
-    white-space: nowrap;
-  }
-  .tab-btn.active {
+    padding: 0.75rem 2rem;
+    border-bottom: 1px solid var(--border);
     background: var(--surface);
-    color: var(--ink);
-    box-shadow: var(--shadow);
   }
+  .tabs-inner { display: flex; gap: 2px; background: var(--bg-2); border-radius: var(--radius-md); padding: 3px; }
+  .tab-btn { padding: 6px 16px; border: none; background: transparent; font-size: 13px; font-weight: 500; color: var(--ink-3); cursor: pointer; border-radius: calc(var(--radius-md) - 2px); transition: all var(--t); font-family: 'Inter', sans-serif; }
+  .tab-btn.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
   .tab-btn:hover:not(.active) { color: var(--ink-2); }
   .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+  .tab-panel.active { display: flex; }
 
-  /* ── STEP CONTAINER ──────────────────────────────────────── */
-  .step {
-    position: relative;
-    margin-bottom: 1px;
-  }
-  /* Notebook timeline line */
-  .steps-wrap {
-    position: relative;
-  }
-  .steps-wrap::before {
-    content: '';
-    position: absolute;
-    left: 18px;
-    top: 28px;
-    bottom: 28px;
-    width: 1.5px;
-    background: linear-gradient(to bottom, var(--accent) 0%, var(--border) 100%);
-    opacity: 0.35;
-    pointer-events: none;
+  /* ── PIPELINE (3 columns) ── */
+  .pipeline {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 120px);
+    width: 100%;
   }
 
-  /* ── CARD ─────────────────────────────────────────────────── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem 1.25rem 1.5rem;
-    margin-bottom: 10px;
-    transition: border-color var(--transition);
-    position: relative;
+  .pipeline-col {
+    flex: 1;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: all var(--t);
+    min-width: 0;
   }
-  .card:hover { border-color: var(--border-2); }
+  .pipeline-col:last-child { border-right: none; }
 
-  /* Step number dot */
-  .step-dot {
-    width: 22px; height: 22px;
+  /* Inactive column — dimmed header, hidden body */
+  .pipeline-col.inactive .col-body { display: none; }
+  .pipeline-col.inactive .col-header { opacity: 0.45; }
+
+  /* Active column — full */
+  .pipeline-col.active .col-header { border-bottom: 2px solid var(--accent); }
+
+  /* Done column — green tick, compressed */
+  .pipeline-col.done .col-header { border-bottom: 2px solid var(--green); }
+  .pipeline-col.done .col-body { display: none; }
+  .pipeline-col.done .step-num { background: var(--green); border-color: var(--green); color: #fff; }
+
+  .col-header {
+    padding: 1rem 1.25rem 0.9rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    cursor: default;
+    user-select: none;
+  }
+  .pipeline-col.done .col-header { cursor: pointer; }
+  .pipeline-col.done .col-header:hover { background: var(--bg-2); }
+
+  .step-num {
+    width: 24px; height: 24px;
     border-radius: 50%;
-    background: var(--accent-soft);
     border: 1.5px solid var(--accent);
+    background: var(--accent-soft);
     color: var(--accent);
     font-size: 11px;
     font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 8px;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-  }
-  .step-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all var(--t);
   }
-  .step-title {
+  .col-title {
     font-family: 'Lora', Georgia, serif;
     font-size: 13px;
     font-weight: 500;
-    color: var(--ink-2);
-    letter-spacing: 0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .col-subtitle {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .done-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--green);
+    background: var(--green-soft);
+    padding: 2px 8px;
+    border-radius: 100px;
+    flex-shrink: 0;
   }
 
-  /* ── INPUTS ───────────────────────────────────────────────── */
-  .input-row { display: flex; gap: 8px; align-items: stretch; }
-  .input-row input { flex: 1; }
+  .col-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-  input[type="text"], input[type="date"], textarea, select {
-    padding: 9px 12px;
+  /* ── INPUTS ── */
+  .input-row { display: flex; gap: 8px; }
+  .input-row input { flex: 1; min-width: 0; }
+  input[type="text"], textarea, select {
+    padding: 8px 11px;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    font-size: 14px;
+    font-size: 13px;
     font-family: 'Inter', sans-serif;
     width: 100%;
     background: var(--bg-2);
     color: var(--ink);
-    transition: all var(--transition);
+    transition: all var(--t);
     outline: none;
-    -webkit-appearance: none;
   }
-  input[type="text"]:focus, textarea:focus, select:focus {
+  input[type="text"]:focus, textarea:focus {
     border-color: var(--accent);
     background: var(--surface);
-    box-shadow: 0 0 0 3px rgba(124, 111, 247, 0.12);
+    box-shadow: 0 0 0 3px rgba(124,111,247,0.1);
   }
-  textarea { resize: vertical; min-height: 240px; line-height: 1.7; }
+  textarea { resize: vertical; min-height: 220px; line-height: 1.7; }
 
-  /* ── BUTTONS ──────────────────────────────────────────────── */
-  .btn {
-    padding: 9px 16px;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    transition: all var(--transition);
-    border: none;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .btn-primary {
-    background: var(--ink);
-    color: var(--bg);
-  }
-  .btn-primary:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+  /* ── BUTTONS ── */
+  .btn { padding: 8px 15px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all var(--t); border: none; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover:not(:disabled) { opacity: 0.82; transform: translateY(-1px); }
   .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-  .btn-accent {
-    background: var(--accent);
-    color: #fff;
-  }
+  .btn-accent { background: var(--accent); color: #fff; }
   .btn-accent:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink-2);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover { background: var(--bg-2); border-color: var(--border-2); color: var(--ink); }
-  .btn-danger-ghost {
-    background: transparent;
-    color: var(--red);
-    border: 1px solid transparent;
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-  .btn-danger-ghost:hover { background: var(--red-soft); border-color: var(--red); }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-accent:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--bg-2); color: var(--ink); }
+  .btn-danger-ghost { background: transparent; color: var(--red); border: 1px solid transparent; font-size: 12px; padding: 5px 9px; }
+  .btn-danger-ghost:hover { background: var(--red-soft); }
+  .btn-sm { padding: 5px 11px; font-size: 12px; }
+  .action-row { display: flex; gap: 6px; flex-wrap: wrap; }
 
-  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem; }
-
-  /* ── HINT / STATUS ────────────────────────────────────────── */
-  .hint { font-size: 12px; color: var(--ink-3); margin-top: 5px; }
-  .status { font-size: 13px; color: var(--ink-3); margin-top: 8px; min-height: 18px; }
+  .hint { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; }
+  .status { font-size: 12.5px; color: var(--ink-3); min-height: 16px; }
   .status.err { color: var(--red); }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 10px; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .divider { height: 1px; background: var(--border); }
 
-  .field { margin-bottom: 10px; }
-  .field label { font-size: 11px; font-weight: 500; color: var(--ink-3); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  /* ── PUB CARDS ────────────────────────────────────────────── */
-  .pub-list { margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; }
-  .pub-card {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.1rem;
-    border-left: 3px solid var(--border-2);
-    transition: all var(--transition);
-    cursor: default;
-  }
+  /* ── PUB CARDS ── */
+  .pub-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.9rem 1rem; border-left: 3px solid var(--border-2); transition: all var(--t); }
   .pub-card:hover { border-color: var(--accent); border-left-color: var(--accent); }
   .pub-card.selected { border-left-color: var(--green); border-color: var(--green); background: var(--green-soft); }
-  .pub-card-title {
-    font-family: 'Lora', Georgia, serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.45;
-    margin-bottom: 5px;
-    color: var(--ink);
-  }
-  .pub-card-title a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border-2); transition: border-color var(--transition); }
-  .pub-card-title a:hover { border-bottom-color: var(--accent); color: var(--accent); }
-  .pub-card-meta { font-size: 11px; color: var(--ink-3); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .pub-card-authors { font-size: 12px; color: var(--ink-2); margin-bottom: 7px; line-height: 1.5; }
-  .pub-card-abstract { font-size: 12.5px; color: var(--ink-2); line-height: 1.65; }
-  .pub-card-footer { margin-top: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .pub-card-title { font-family: 'Lora', Georgia, serif; font-size: 13px; font-weight: 500; line-height: 1.4; margin-bottom: 4px; }
+  .pub-card-title a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border-2); }
+  .pub-card-title a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .pub-card-meta { font-size: 11px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+  .pub-card-authors { font-size: 11.5px; color: var(--ink-2); font-style: italic; margin-bottom: 5px; line-height: 1.5; }
+  .pub-card-abstract { font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+  .pub-card-footer { margin-top: 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
 
-  /* ── BADGES ───────────────────────────────────────────────── */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 100px;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-  }
-  .badge-purple  { background: var(--accent-soft); color: var(--accent); }
-  .badge-high    { background: var(--red-soft); color: var(--red); }
-  .badge-medium  { background: var(--amber-soft); color: var(--amber); }
-  .badge-low     { background: var(--green-soft); color: var(--green); }
-  .badge-neutral { background: var(--bg-3); color: var(--ink-3); }
-
-  /* ── SUMMARY BOX ──────────────────────────────────────────── */
-  .summary-box {
-    background: var(--bg-2);
-    border-radius: var(--radius-md);
-    padding: 1.1rem 1.2rem;
-    font-size: 13.5px;
-    line-height: 1.8;
-    color: var(--ink-2);
-    border-left: 3px solid var(--accent);
-  }
-  .summary-box p { margin-bottom: 0.65rem; }
+  /* ── SUMMARY ── */
+  .summary-box { background: var(--bg-2); border-radius: var(--radius-md); padding: 1rem; font-size: 13px; line-height: 1.8; color: var(--ink-2); border-left: 3px solid var(--accent); }
+  .summary-box p { margin-bottom: 0.6rem; }
   .summary-box p:last-child { margin-bottom: 0; }
 
-  /* ── DIVIDER ──────────────────────────────────────────────── */
-  .divider { height: 1px; background: var(--border); margin: 1.1rem 0; }
+  /* ── BADGES ── */
+  .badge { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 100px; letter-spacing: 0.03em; text-transform: uppercase; }
+  .badge-purple { background: var(--accent-soft); color: var(--accent); }
+  .badge-high   { background: var(--red-soft); color: var(--red); }
+  .badge-medium { background: var(--amber-soft); color: var(--amber); }
+  .badge-low    { background: var(--green-soft); color: var(--green); }
 
-  /* ── TRACKER ──────────────────────────────────────────────── */
-  .tracker-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-  .tracker-count { font-size: 12px; color: var(--ink-3); }
-  .tracker-empty { text-align: center; padding: 3.5rem 1rem; color: var(--ink-3); font-size: 13px; line-height: 1.7; }
-  .tracker-empty strong { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 6px; }
-
-  .tracker-table { width: 100%; border-collapse: collapse; }
-  .tracker-table th {
-    text-align: left;
-    padding: 8px 12px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--ink-3);
-    font-weight: 600;
-    border-bottom: 1px solid var(--border);
-  }
-  .tracker-table td {
-    padding: 11px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-    font-size: 13px;
-    color: var(--ink);
-  }
-  .tracker-table tr:last-child td { border-bottom: none; }
-  .tracker-table tbody tr { transition: background var(--transition); }
-  .tracker-table tbody tr:hover td { background: var(--bg-2); }
-  .prof-name { font-weight: 500; font-size: 13px; }
-  .prof-email-small { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
-  .paper-link { font-size: 11px; color: var(--accent); text-decoration: none; }
-  .paper-link:hover { text-decoration: underline; }
-  .followup-ok     { color: var(--green); font-size: 12px; }
-  .followup-soon   { color: var(--amber); font-weight: 500; font-size: 12px; }
-  .followup-overdue { color: var(--red); font-weight: 500; font-size: 12px; }
-  .notes-input {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 5px 9px;
-    font-size: 12px;
-    width: 100%;
-    min-width: 130px;
-    background: var(--bg-2);
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-  }
-  .notes-input:focus { outline: none; border-color: var(--accent); }
-
-  /* ── SPINNER ──────────────────────────────────────────────── */
-  .spinner {
-    display: inline-block;
-    width: 13px; height: 13px;
-    border: 2px solid currentColor;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: -2px;
-    margin-right: 6px;
-  }
+  /* ── SPINNER ── */
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 5px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── TOAST ────────────────────────────────────────────────── */
-  .toast {
-    position: fixed;
-    bottom: 1.5rem; right: 1.5rem;
-    background: var(--ink);
-    color: var(--bg);
-    padding: 10px 16px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: all 0.2s ease;
-    pointer-events: none;
-    z-index: 999;
-    max-width: 280px;
-  }
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--ink); color: var(--bg); padding: 10px 15px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; opacity: 0; transform: translateY(6px); transition: all 0.2s ease; pointer-events: none; z-index: 999; }
   .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── TRACKER ── */
+  .tracker-wrap { padding: 1.5rem 2rem; width: 100%; }
+  .tracker-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+  .tracker-title { font-family: 'Lora', Georgia, serif; font-size: 16px; font-weight: 500; }
+  .tracker-count { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .tracker-empty { text-align: center; padding: 3rem 1rem; color: var(--ink-3); font-size: 13px; line-height: 1.8; }
+  .tracker-empty strong { display: block; font-size: 15px; color: var(--ink-2); margin-bottom: 6px; }
+  .tracker-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .tracker-table th { text-align: left; padding: 8px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); font-weight: 600; border-bottom: 1px solid var(--border); }
+  .tracker-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .tracker-table tr:last-child td { border-bottom: none; }
+  .tracker-table tbody tr:hover td { background: var(--bg-2); }
+  .prof-name { font-weight: 500; }
+  .prof-email-small { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+  .paper-link { font-size: 11px; color: var(--accent); text-decoration: none; }
+  .paper-link:hover { text-decoration: underline; }
+  .followup-ok { color: var(--green); font-size: 12px; }
+  .followup-soon { color: var(--amber); font-weight: 500; font-size: 12px; }
+  .followup-overdue { color: var(--red); font-weight: 500; font-size: 12px; }
+  .notes-input { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 5px 9px; font-size: 12px; width: 100%; min-width: 120px; background: var(--bg-2); color: var(--ink); font-family: 'Inter', sans-serif; }
+  .notes-input:focus { outline: none; border-color: var(--accent); }
 
   .hidden { display: none !important; }
 
-  /* ── RESPONSIVE ───────────────────────────────────────────── */
-  @media (max-width: 580px) {
-    .card { padding: 1rem; }
-    .topbar { flex-wrap: wrap; gap: 10px; }
-    .tracker-table th:nth-child(3),
-    .tracker-table td:nth-child(3) { display: none; }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .pipeline { flex-direction: column; }
+    .pipeline-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .pipeline-col.inactive .col-body { display: none; }
+    .topbar { padding: 1rem; }
+    .tabs-bar { padding: 0.6rem 1rem; }
+    .tracker-wrap { padding: 1rem; }
   }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="logo">
-      <div class="logo-icon">🔬</div>
-      <div>
-        <div class="logo-text">ResearchReach</div>
-        <div class="logo-sub">Volunteer outreach for biochemistry students</div>
-      </div>
-    </div>
-    <div class="topbar-right">
-      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" id="themeBtn">🌙</button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🔬</div>
+    <div>
+      <div class="logo-text">ResearchReach</div>
+      <div class="logo-sub">Volunteer outreach for biochemistry students</div>
     </div>
   </div>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+  </div>
+</div>
 
-  <!-- TABS -->
-  <div class="tabs">
+<!-- TABS BAR -->
+<div class="tabs-bar">
+  <div class="tabs-inner">
     <button class="tab-btn active" onclick="switchTab('search', event)">Search &amp; Email</button>
     <button class="tab-btn" onclick="switchTab('tracker', event)">Email Tracker</button>
   </div>
+</div>
 
-  <!-- ── SEARCH TAB ─────────────────────────────────────────── -->
-  <div class="tab-panel active" id="tab-search">
-    <div class="steps-wrap">
+<!-- SEARCH TAB -->
+<div class="tab-panel active" id="tab-search">
+  <div class="pipeline">
 
-      <!-- STEP 1 -->
-      <div class="card">
-        <div class="step-header">
-          <span class="step-dot">1</span>
-          <span class="step-title">Find a professor's publications</span>
+    <!-- COL 1: SEARCH -->
+    <div class="pipeline-col active" id="col-1">
+      <div class="col-header">
+        <span class="step-num" id="num-1">1</span>
+        <div>
+          <div class="col-title">Find Publications</div>
+          <div class="col-subtitle" id="sub-1">Search by professor name</div>
         </div>
-        <div class="input-row">
-          <input type="text" id="profName" placeholder="e.g. Jennifer Doudna UC Berkeley" onkeydown="if(event.key==='Enter') searchPubs()" />
-          <button class="btn btn-primary" id="searchBtn" onclick="searchPubs()">Search</button>
+      </div>
+      <div class="col-body">
+        <div class="field">
+          <label>Professor name</label>
+          <div class="input-row">
+            <input type="text" id="profName" placeholder="e.g. Jennifer Doudna UC Berkeley" onkeydown="if(event.key==='Enter') searchPubs()" />
+            <button class="btn btn-primary" id="searchBtn" onclick="searchPubs()">Search</button>
+          </div>
+          <div class="hint">Include university for best results</div>
         </div>
-        <div class="hint">Include university for best results — e.g. "David Baker University of Washington"</div>
         <div id="searchStatus" class="status"></div>
-        <div class="pub-list" id="pubResults"></div>
+        <div id="pubResults" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
+    </div>
 
-      <!-- STEP 2 -->
-      <div class="card hidden" id="step2">
-        <div class="step-header">
-          <span class="step-dot">2</span>
-          <span class="step-title">Research summary</span>
+    <!-- COL 2: SUMMARY -->
+    <div class="pipeline-col inactive" id="col-2">
+      <div class="col-header" onclick="reopenCol(2)">
+        <span class="step-num" id="num-2">2</span>
+        <div>
+          <div class="col-title">Research Summary</div>
+          <div class="col-subtitle" id="sub-2">Select a paper first</div>
         </div>
-        <div id="summaryBox" class="summary-box"></div>
+        <span class="done-badge hidden" id="done-2">Done ✓</span>
       </div>
+      <div class="col-body">
+        <div id="summaryBox" class="summary-box" style="display:none;"></div>
+      </div>
+    </div>
 
-      <!-- STEP 3 -->
-      <div class="card hidden" id="step3">
-        <div class="step-header">
-          <span class="step-dot">3</span>
-          <span class="step-title">Compose your email</span>
+    <!-- COL 3: EMAIL -->
+    <div class="pipeline-col inactive" id="col-3">
+      <div class="col-header" onclick="reopenCol(3)">
+        <span class="step-num" id="num-3">3</span>
+        <div>
+          <div class="col-title">Compose Email</div>
+          <div class="col-subtitle" id="sub-3">Summary needed first</div>
         </div>
+        <span class="done-badge hidden" id="done-3">Sent ✓</span>
+      </div>
+      <div class="col-body">
         <div class="field">
           <label>Your full name</label>
           <input type="text" id="senderName" placeholder="e.g. Alex Varela" />
         </div>
         <div class="field">
-          <label>Your degree &amp; university</label>
+          <label>Degree &amp; university</label>
           <input type="text" id="senderInfo" value="B.S. Biochemistry, California State University Fullerton" />
         </div>
         <div class="field">
-          <label>Professor's email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(optional)</span></label>
+          <label>Professor's email <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
           <input type="text" id="profEmail" placeholder="professor@university.edu" />
         </div>
         <button class="btn btn-accent" onclick="generateEmail()" id="genEmailBtn">Generate email draft</button>
         <div id="emailStatus" class="status"></div>
-
-        <div id="emailArea" class="hidden" style="margin-top:1.25rem;">
+        <div id="emailArea" class="hidden">
           <div class="divider"></div>
           <div class="field">
             <label>Subject line</label>
             <input type="text" id="emailSubject" />
           </div>
           <div class="field">
-            <label>Email body — edit freely before sending</label>
+            <label>Email body — edit before sending</label>
             <textarea id="emailBody"></textarea>
           </div>
           <div class="action-row">
             <button class="btn btn-primary" onclick="openGmail()">Open in Gmail</button>
-            <button class="btn btn-ghost" onclick="copyEmail()">Copy email</button>
+            <button class="btn btn-ghost" onclick="copyEmail()">Copy</button>
             <button class="btn btn-ghost" onclick="generateEmail()">Regenerate</button>
-            <button class="btn btn-ghost" onclick="logToTracker()" id="logBtn">Mark as sent</button>
+            <button class="btn btn-ghost" onclick="logToTracker()">Mark as sent</button>
           </div>
         </div>
       </div>
-
     </div>
-  </div>
 
-  <!-- ── TRACKER TAB ────────────────────────────────────────── -->
-  <div class="tab-panel" id="tab-tracker">
-    <div class="card">
-      <div class="tracker-topbar">
-        <div>
-          <div style="font-family:'Lora',Georgia,serif; font-size:15px; font-weight:500; color:var(--ink);">Outreach Log</div>
-          <div class="tracker-count" id="trackerCount">No entries yet</div>
-        </div>
-        <button class="btn btn-ghost btn-sm" onclick="clearAllTracked()">Clear all</button>
+  </div>
+</div>
+
+<!-- TRACKER TAB -->
+<div class="tab-panel" id="tab-tracker">
+  <div class="tracker-wrap">
+    <div class="tracker-topbar">
+      <div>
+        <div class="tracker-title">Outreach Log</div>
+        <div class="tracker-count" id="trackerCount">No entries yet</div>
       </div>
-      <div id="trackerBody"></div>
+      <button class="btn btn-ghost btn-sm" onclick="clearAllTracked()">Clear all</button>
     </div>
+    <div id="trackerBody"></div>
   </div>
-
-</div><!-- /page -->
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─────────────────────────────────────────────────────────────
-  //  PASTE YOUR CLOUDFLARE WORKER URL BELOW (keep the quotes)
-  // ─────────────────────────────────────────────────────────────
-  const WORKER_URL = "https://professor-emailer.avarela8058.workers.dev/";
+  // ─────────────────────────────────────────────
+  //  PASTE YOUR CLOUDFLARE WORKER URL BELOW
+  // ─────────────────────────────────────────────
+  const WORKER_URL = "https://professor-emailer.avarela8058.workers.dev/E";
 
   let selectedPub = null;
   let profNameValue = '';
 
-  // ── THEME ───────────────────────────────────────────────────
+  // ── THEME ──
   function toggleTheme() {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
@@ -556,15 +451,15 @@
     document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
     localStorage.setItem('theme', isDark ? 'light' : 'dark');
   }
-  (function initTheme() {
-    const saved = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', saved);
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('themeBtn').textContent = saved === 'dark' ? '☀️' : '🌙';
+  (function() {
+    const s = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', s);
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('themeBtn').textContent = s === 'dark' ? '☀️' : '🌙';
     });
   })();
 
-  // ── TABS ────────────────────────────────────────────────────
+  // ── TABS ──
   function switchTab(name, e) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -573,27 +468,50 @@
     if (name === 'tracker') renderTracker();
   }
 
-  // ── CLAUDE API ──────────────────────────────────────────────
-  async function callClaude(userPrompt, system) {
-    if (WORKER_URL === "PASTE_YOUR_WORKER_URL_HERE") {
-      throw new Error("Worker URL not set — replace PASTE_YOUR_WORKER_URL_HERE in index.html with your Cloudflare Worker URL.");
+  // ── PIPELINE STATE ──
+  function setColState(num, state) {
+    // state: 'active' | 'inactive' | 'done'
+    const col = document.getElementById('col-' + num);
+    col.classList.remove('active', 'inactive', 'done');
+    col.classList.add(state);
+  }
+
+  function reopenCol(num) {
+    // Allow clicking a done col to expand it
+    const col = document.getElementById('col-' + num);
+    if (col.classList.contains('done')) {
+      setColState(num, 'active');
     }
+  }
+
+  function advanceTo(step, subtitle) {
+    // step 2 or 3
+    if (step === 2) {
+      setColState(1, 'done');
+      setColState(2, 'active');
+      setColState(3, 'inactive');
+      document.getElementById('sub-2').textContent = subtitle || 'Summarizing…';
+      document.getElementById('done-2').classList.add('hidden');
+    } else if (step === 3) {
+      setColState(2, 'done');
+      setColState(3, 'active');
+      document.getElementById('done-2').classList.remove('hidden');
+      document.getElementById('sub-3').textContent = subtitle || 'Ready to compose';
+    }
+  }
+
+  // ── CLAUDE ──
+  async function callClaude(userPrompt, system) {
+    if (WORKER_URL === "PASTE_YOUR_WORKER_URL_HERE") throw new Error("Worker URL not set — paste your Cloudflare Worker URL into index.html.");
     const body = { model: 'claude-sonnet-4-6', max_tokens: 1000, messages: [{ role: 'user', content: userPrompt }] };
     if (system) body.system = system;
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err?.error?.message || 'API error ' + res.status);
-    }
+    const res = await fetch(WORKER_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || 'API error ' + res.status); }
     const data = await res.json();
     return data.content?.find(b => b.type === 'text')?.text || '';
   }
 
-  // ── PUBMED SEARCH ───────────────────────────────────────────
+  // ── SEARCH ──
   async function searchPubs() {
     const name = document.getElementById('profName').value.trim();
     if (!name) return;
@@ -602,17 +520,25 @@
     const results = document.getElementById('pubResults');
     const btn = document.getElementById('searchBtn');
     status.className = 'status';
-    status.innerHTML = '<span class="spinner"></span> Searching PubMed...';
+    status.innerHTML = '<span class="spinner"></span> Searching PubMed…';
     results.innerHTML = '';
     btn.disabled = true;
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.add('hidden');
     selectedPub = null;
+    // Reset cols
+    setColState(1, 'active');
+    setColState(2, 'inactive');
+    setColState(3, 'inactive');
+    document.getElementById('sub-2').textContent = 'Select a paper first';
+    document.getElementById('sub-3').textContent = 'Summary needed first';
+    document.getElementById('done-2').classList.add('hidden');
+    document.getElementById('done-3').classList.add('hidden');
+
     try {
       const query = encodeURIComponent(name + '[Author]');
-      const searchRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmax=5&sort=date&retmode=json`);
-      const searchData = await searchRes.json();
-      let ids = searchData.esearchresult?.idlist || [];
+      let ids = [];
+      const r1 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmax=5&sort=date&retmode=json`);
+      const d1 = await r1.json();
+      ids = d1.esearchresult?.idlist || [];
       if (!ids.length) {
         const r2 = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${encodeURIComponent(name)}&retmax=5&sort=date&retmode=json`);
         const d2 = await r2.json();
@@ -620,104 +546,89 @@
       }
       if (!ids.length) {
         status.className = 'status err';
-        status.innerHTML = `No results for "${name}". Try last name + initials (e.g. "Doudna JA") or add their university.`;
-        btn.disabled = false;
-        return;
+        status.innerHTML = `No results for "${name}". Try last name + initials or add university.`;
+        btn.disabled = false; return;
       }
       const fetchRes = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${ids.slice(0,5).join(',')}&retmode=xml`);
-      const xmlText = await fetchRes.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(xmlText, 'text/xml');
+      const xml = await fetchRes.text();
+      const doc = new DOMParser().parseFromString(xml, 'text/xml');
       const articles = Array.from(doc.querySelectorAll('PubmedArticle'));
-      if (!articles.length) {
-        status.className = 'status err';
-        status.innerHTML = 'Could not parse results. Try a different name format.';
-        btn.disabled = false;
-        return;
-      }
+      if (!articles.length) { status.className = 'status err'; status.innerHTML = 'Could not parse results.'; btn.disabled = false; return; }
+
       const pubs = articles.map(art => {
-        const authorNodes = Array.from(art.querySelectorAll('Author'));
-        const authors = authorNodes.map(a => {
-          const last = a.querySelector('LastName')?.textContent || '';
-          const initials = a.querySelector('Initials')?.textContent || '';
-          return `${last} ${initials}`.trim();
-        }).filter(Boolean);
+        const authors = Array.from(art.querySelectorAll('Author')).map(a => `${a.querySelector('LastName')?.textContent || ''} ${a.querySelector('Initials')?.textContent || ''}`.trim()).filter(Boolean);
         const pmid = art.querySelector('PMID')?.textContent || '';
         return {
-          pmid,
+          pmid, authors,
           title: art.querySelector('ArticleTitle')?.textContent || 'Untitled',
           journal: art.querySelector('Journal > Title')?.textContent || '',
           year: art.querySelector('PubDate > Year')?.textContent || art.querySelector('PubDate > MedlineDate')?.textContent?.slice(0,4) || '',
-          authors,
           abstract: Array.from(art.querySelectorAll('AbstractText')).map(a => a.textContent).join(' ') || 'No abstract available.',
           pubmedUrl: pmid ? `https://pubmed.ncbi.nlm.nih.gov/${pmid}/` : ''
         };
       });
       window._pubs = pubs;
       status.innerHTML = `Found ${pubs.length} publication${pubs.length !== 1 ? 's' : ''} — select one to continue.`;
+
       pubs.forEach((pub, i) => {
         const card = document.createElement('div');
         card.className = 'pub-card';
         card.id = 'pub-' + i;
-        const shortAbs = pub.abstract.length > 320 ? pub.abstract.slice(0, 320) + '…' : pub.abstract;
-        const authorsDisplay = pub.authors.length
-          ? pub.authors.slice(0, 6).join(', ') + (pub.authors.length > 6 ? ', et al.' : '')
-          : 'Authors unavailable';
-        const titleHtml = pub.pubmedUrl
-          ? `<a href="${pub.pubmedUrl}" target="_blank">${pub.title}</a>`
-          : pub.title;
-        const currentYear = new Date().getFullYear();
-        const age = currentYear - (parseInt(pub.year) || 0);
-        let pLabel = 'High Priority', pClass = 'badge-high';
-        if (age >= 3) { pLabel = 'Low Priority'; pClass = 'badge-low'; }
-        else if (age >= 1) { pLabel = 'Medium Priority'; pClass = 'badge-medium'; }
+        const shortAbs = pub.abstract.length > 280 ? pub.abstract.slice(0, 280) + '…' : pub.abstract;
+        const authorsDisplay = pub.authors.length ? pub.authors.slice(0,5).join(', ') + (pub.authors.length > 5 ? ', et al.' : '') : 'Authors unavailable';
+        const titleHtml = pub.pubmedUrl ? `<a href="${pub.pubmedUrl}" target="_blank">${pub.title}</a>` : pub.title;
+        const age = new Date().getFullYear() - (parseInt(pub.year) || 0);
+        let pLabel = 'High', pClass = 'badge-high';
+        if (age >= 3) { pLabel = 'Low'; pClass = 'badge-low'; }
+        else if (age >= 1) { pLabel = 'Medium'; pClass = 'badge-medium'; }
         card.innerHTML = `
           <div class="pub-card-title">${titleHtml}</div>
           <div class="pub-card-meta">
-            <span>${pub.journal}</span>
-            <span style="color:var(--border-2)">·</span>
-            <span>${pub.year}</span>
+            <span>${pub.journal}</span><span style="color:var(--border-2)">·</span><span>${pub.year}</span>
             ${pub.pmid ? `<span class="badge badge-purple">PMID ${pub.pmid}</span>` : ''}
             <span class="badge ${pClass}">${pLabel}</span>
           </div>
-          <div class="pub-card-authors">Authors: ${authorsDisplay}</div>
+          <div class="pub-card-authors">${authorsDisplay}</div>
           <div class="pub-card-abstract">${shortAbs}</div>
           <div class="pub-card-footer">
-            ${pub.pubmedUrl ? `<a href="${pub.pubmedUrl}" target="_blank" style="font-size:12px; color:var(--accent); text-decoration:none;">View on PubMed ↗</a>` : '<span></span>'}
+            ${pub.pubmedUrl ? `<a href="${pub.pubmedUrl}" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">PubMed ↗</a>` : '<span></span>'}
             <button class="btn btn-primary btn-sm" onclick="selectPub(${i})">Use this paper</button>
           </div>`;
         results.appendChild(card);
       });
     } catch(e) {
       status.className = 'status err';
-      status.innerHTML = 'PubMed error: ' + e.message;
+      status.innerHTML = 'Error: ' + e.message;
     }
     btn.disabled = false;
   }
 
-  // ── SELECT & SUMMARIZE ──────────────────────────────────────
+  // ── SELECT & SUMMARIZE ──
   async function selectPub(idx) {
     const pub = window._pubs[idx];
     document.querySelectorAll('.pub-card').forEach(c => c.classList.remove('selected'));
     document.getElementById('pub-' + idx).classList.add('selected');
     selectedPub = pub;
+
+    advanceTo(2, 'Summarizing…');
     const summaryBox = document.getElementById('summaryBox');
-    document.getElementById('step2').classList.remove('hidden');
-    summaryBox.innerHTML = '<span class="spinner"></span> Summarizing with Claude AI…';
-    document.getElementById('step3').classList.add('hidden');
+    summaryBox.style.display = 'block';
+    summaryBox.innerHTML = '<span class="spinner"></span> Reading the paper…';
+
     try {
       const text = await callClaude(
-        `Summarize this research paper for a biochemistry undergraduate seeking a volunteer position in this professor's lab.\n\nTitle: ${pub.title}\nJournal: ${pub.journal} (${pub.year})\nAuthors: ${pub.authors.join(', ')}\nAbstract: ${pub.abstract}\n\nWrite 3 focused paragraphs (~60 words each):\n1. What the research is about and why it matters\n2. Key methods and main findings\n3. What skills a volunteer biochemistry student could gain\n\nTone: enthusiastic but grounded. Plain language, no bullet points.`,
+        `Summarize this research paper for a biochemistry undergraduate who wants to volunteer in this lab.\n\nTitle: ${pub.title}\nJournal: ${pub.journal} (${pub.year})\nAuthors: ${pub.authors.join(', ')}\nAbstract: ${pub.abstract}\n\nWrite 3 focused paragraphs (~60 words each):\n1. What the research is about and why it matters\n2. Key methods and main findings\n3. What skills a volunteer biochemistry student could gain\n\nTone: enthusiastic but grounded. Plain language, no bullet points.`,
         'You are a science communicator helping undergraduates understand research.'
       );
       summaryBox.innerHTML = text.trim().split(/\n\n+/).filter(Boolean).map(p => `<p>${p.trim()}</p>`).join('');
-      document.getElementById('step3').classList.remove('hidden');
+      advanceTo(3, `Ready — ${pub.title.slice(0, 30)}…`);
+      document.getElementById('sub-2').textContent = pub.title.slice(0, 35) + '…';
     } catch(e) {
       summaryBox.innerHTML = `<span style="color:var(--red)">Error: ${e.message}</span>`;
     }
   }
 
-  // ── GENERATE EMAIL ──────────────────────────────────────────
+  // ── GENERATE EMAIL ──
   async function generateEmail() {
     if (!selectedPub) return;
     const sender = document.getElementById('senderName').value.trim() || '[Your Name]';
@@ -729,8 +640,8 @@
     status.innerHTML = '';
     try {
       const text = await callClaude(
-        `Write a cold email from ${sender} (${senderInfo}) to Professor ${profNameValue} requesting an unpaid volunteer research position.\n\nPaper: "${selectedPub.title}" — ${selectedPub.journal} (${selectedPub.year})\nAbstract: ${selectedPub.abstract}\n\nFormat:\nSubject: [subject line]\n\n[body]\n\nGuidelines:\n- Open with one specific compelling detail from this paper\n- Show genuine curiosity about this research direction\n- Mention biochemistry background at CSUF\n- Clearly state this is an unpaid volunteer request\n- 3-4 short paragraphs, warm but professional\n- Close with a request for a 15-minute call\n- Sign off as: ${sender}\n- No placeholder brackets anywhere`,
-        'You write cold emails that sound like a real enthusiastic college student wrote them — not a professional copywriter or AI. Use natural sentence rhythm with occasional short sentences. Vary paragraph length. Avoid corporate phrases like "I am writing to express my interest", "I would be honored", "keen interest", "leverage my skills", "align with my goals", or "I am reaching out". Never use em-dashes. Do not open with the student\'s name or "My name is". Write the way a smart, excited undergrad actually talks — genuine curiosity, a little informal but still respectful, no buzzwords.'
+        `Write a cold email from ${sender} (${senderInfo}) to Professor ${profNameValue} asking for an unpaid volunteer spot in their lab.\n\nPaper: "${selectedPub.title}" — ${selectedPub.journal} (${selectedPub.year})\nAbstract: ${selectedPub.abstract}\n\nFormat:\nSubject: [subject line]\n\n[body]\n\nGuidelines:\n- Open with one specific compelling detail from this paper\n- Show genuine curiosity about where this research is heading\n- Mention biochemistry background at CSUF naturally\n- Make clear this is an unpaid volunteer ask\n- 3-4 short paragraphs, warm but professional\n- Close asking for a 15-minute call\n- Sign off as: ${sender}\n- No placeholder brackets anywhere in the body`,
+        `You write cold emails that sound like a real enthusiastic college student wrote them — not a professional copywriter or AI. Use natural sentence rhythm with occasional short sentences. Vary paragraph length. Avoid corporate phrases like "I am writing to express my interest", "I would be honored", "keen interest", "leverage my skills", "align with my goals", or "I am reaching out". Never use em-dashes. Do not open with the student's name or "My name is". Write the way a smart, excited undergrad actually talks — genuine curiosity, a little informal but still respectful, no buzzwords.`
       );
       const lines = text.split('\n');
       const subjIdx = lines.findIndex(l => l.toLowerCase().startsWith('subject:'));
@@ -756,40 +667,28 @@
   }
   function copyEmail() {
     const full = `Subject: ${document.getElementById('emailSubject').value}\n\n${document.getElementById('emailBody').value}`;
-    navigator.clipboard.writeText(full).then(() => showToast('Email copied to clipboard'));
+    navigator.clipboard.writeText(full).then(() => showToast('Email copied'));
   }
 
-  // ── TRACKER ─────────────────────────────────────────────────
+  // ── TRACKER ──
   function getTracked() { try { return JSON.parse(localStorage.getItem('prof_tracker') || '[]'); } catch { return []; } }
   function saveTracked(d) { localStorage.setItem('prof_tracker', JSON.stringify(d)); }
 
   function logToTracker() {
     if (!selectedPub || !profNameValue) return;
     const today = new Date();
-    const followUp = new Date(today);
-    followUp.setDate(followUp.getDate() + 14);
+    const fu = new Date(today); fu.setDate(fu.getDate() + 14);
     const age = new Date().getFullYear() - (parseInt(selectedPub.year) || 0);
     let priority = 'High';
     if (age >= 3) priority = 'Low';
     else if (age >= 1) priority = 'Medium';
     const tracked = getTracked();
-    if (tracked.find(t => t.professor.toLowerCase() === profNameValue.toLowerCase())) {
-      showToast('Already in tracker — check the Email Tracker tab');
-      return;
-    }
-    tracked.unshift({
-      id: Date.now(),
-      professor: profNameValue,
-      email: document.getElementById('profEmail').value.trim(),
-      paper: selectedPub.title,
-      paperUrl: selectedPub.pubmedUrl || '',
-      dateSent: today.toISOString().split('T')[0],
-      followUpDate: followUp.toISOString().split('T')[0],
-      priority,
-      notes: ''
-    });
+    if (tracked.find(t => t.professor.toLowerCase() === profNameValue.toLowerCase())) { showToast('Already tracked'); return; }
+    tracked.unshift({ id: Date.now(), professor: profNameValue, email: document.getElementById('profEmail').value.trim(), paper: selectedPub.title, paperUrl: selectedPub.pubmedUrl || '', dateSent: today.toISOString().split('T')[0], followUpDate: fu.toISOString().split('T')[0], priority, notes: '' });
     saveTracked(tracked);
-    showToast('Added to your outreach log');
+    document.getElementById('done-3').classList.remove('hidden');
+    document.getElementById('sub-3').textContent = `Sent to ${profNameValue.split(' ')[0]}`;
+    showToast('Added to outreach log');
   }
 
   function renderTracker() {
@@ -797,58 +696,30 @@
     const body = document.getElementById('trackerBody');
     const count = document.getElementById('trackerCount');
     count.textContent = tracked.length ? `${tracked.length} professor${tracked.length !== 1 ? 's' : ''} tracked` : 'No entries yet';
-    if (!tracked.length) {
-      body.innerHTML = `<div class="tracker-empty"><strong>Your outreach log is empty</strong>Search a professor, generate an email, then click <em>"Mark as sent"</em> to track it here.</div>`;
-      return;
-    }
+    if (!tracked.length) { body.innerHTML = `<div class="tracker-empty"><strong>Your outreach log is empty</strong>Search a professor, generate an email, then click "Mark as sent".</div>`; return; }
     const today = new Date().toISOString().split('T')[0];
     body.innerHTML = `<table class="tracker-table">
-      <thead><tr>
-        <th>Professor</th>
-        <th>Priority</th>
-        <th>Sent</th>
-        <th>Follow-up</th>
-        <th>Notes</th>
-        <th></th>
-      </tr></thead>
-      <tbody>
-        ${tracked.map(t => {
-          const pc = t.priority === 'High' ? 'badge-high' : t.priority === 'Medium' ? 'badge-medium' : 'badge-low';
-          const days = Math.ceil((new Date(t.followUpDate) - new Date(today)) / 86400000);
-          let fClass = 'followup-ok', fLabel = t.followUpDate;
-          if (days < 0) { fClass = 'followup-overdue'; fLabel = `Overdue · ${t.followUpDate}`; }
-          else if (days <= 3) { fClass = 'followup-soon'; fLabel = `Due soon · ${t.followUpDate}`; }
-          return `<tr>
-            <td>
-              <div class="prof-name">${t.professor}</div>
-              ${t.email ? `<div class="prof-email-small">${t.email}</div>` : ''}
-              ${t.paperUrl ? `<a href="${t.paperUrl}" target="_blank" class="paper-link">View paper ↗</a>` : ''}
-            </td>
-            <td><span class="badge ${pc}">${t.priority}</span></td>
-            <td style="font-size:12px; color:var(--ink-2);">${t.dateSent}</td>
-            <td class="${fClass}">${fLabel}</td>
-            <td><input class="notes-input" placeholder="Add notes…" value="${t.notes || ''}" onchange="updateNotes(${t.id}, this.value)" /></td>
-            <td><button class="btn btn-danger-ghost" onclick="removeTracked(${t.id})">Remove</button></td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>`;
+      <thead><tr><th>Professor</th><th>Priority</th><th>Sent</th><th>Follow-up</th><th>Notes</th><th></th></tr></thead>
+      <tbody>${tracked.map(t => {
+        const pc = t.priority === 'High' ? 'badge-high' : t.priority === 'Medium' ? 'badge-medium' : 'badge-low';
+        const days = Math.ceil((new Date(t.followUpDate) - new Date(today)) / 86400000);
+        let fc = 'followup-ok', fl = t.followUpDate;
+        if (days < 0) { fc = 'followup-overdue'; fl = `Overdue · ${t.followUpDate}`; }
+        else if (days <= 3) { fc = 'followup-soon'; fl = `Due soon · ${t.followUpDate}`; }
+        return `<tr>
+          <td><div class="prof-name">${t.professor}</div>${t.email ? `<div class="prof-email-small">${t.email}</div>` : ''}${t.paperUrl ? `<a href="${t.paperUrl}" target="_blank" class="paper-link">View paper ↗</a>` : ''}</td>
+          <td><span class="badge ${pc}">${t.priority}</span></td>
+          <td style="font-size:12px;color:var(--ink-2);">${t.dateSent}</td>
+          <td class="${fc}">${fl}</td>
+          <td><input class="notes-input" placeholder="Notes…" value="${t.notes||''}" onchange="updateNotes(${t.id},this.value)"/></td>
+          <td><button class="btn btn-danger-ghost" onclick="removeTracked(${t.id})">Remove</button></td>
+        </tr>`;
+      }).join('')}</tbody></table>`;
   }
-
-  function updateNotes(id, value) {
-    const tracked = getTracked();
-    const e = tracked.find(t => t.id === id);
-    if (e) { e.notes = value; saveTracked(tracked); }
-  }
-  function removeTracked(id) { saveTracked(getTracked().filter(t => t.id !== id)); renderTracker(); }
-  function clearAllTracked() { if (confirm('Clear all tracked professors?')) { saveTracked([]); renderTracker(); } }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+  function updateNotes(id, v) { const t = getTracked(); const e = t.find(x => x.id===id); if(e){e.notes=v;saveTracked(t);} }
+  function removeTracked(id) { saveTracked(getTracked().filter(t=>t.id!==id)); renderTracker(); }
+  function clearAllTracked() { if(confirm('Clear all?')){saveTracked([]);renderTracker();} }
+  function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 </script>
 </body>
 </html>
